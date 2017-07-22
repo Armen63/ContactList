@@ -8,16 +8,20 @@ import android.support.design.widget.TextInputLayout;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.armen.contactlist.R;
 import com.example.armen.contactlist.io.bus.BusProvider;
-import com.example.armen.contactlist.util.Preference;
+import com.example.armen.contactlist.pojo.User;
+import com.example.armen.contactlist.util.PreferancesHelper;
+import com.example.armen.contactlist.util.user.FileUserStorage;
+import com.example.armen.contactlist.util.user.UserStorage;
 
 /**
  * Created by Armen on 7/16/2017.
  */
 
-public class SignInActivity  extends BaseActivity implements View.OnClickListener {
+public class SignInActivity extends BaseActivity implements View.OnClickListener {
 
     // ===========================================================
     // Constants
@@ -32,10 +36,10 @@ public class SignInActivity  extends BaseActivity implements View.OnClickListene
     private Button mBtnSignIn;
     private Button mBtnSignUp;
     private TextInputLayout mTilEmail;
-    private TextInputEditText mTietEmail;
     private TextInputLayout mTilPass;
+    private TextInputEditText mTietEmail;
     private TextInputEditText mTietPass;
-
+    private UserStorage userStorage;
 
     // ===========================================================
     // Constructors
@@ -93,6 +97,7 @@ public class SignInActivity  extends BaseActivity implements View.OnClickListene
                 String mail = mTietEmail.getText().toString();
                 String pass = mTietPass.getText().toString();
                 grabDataAndSingIn(mail, pass);
+
                 break;
             case R.id.btn_sign_in_sign_up:
                 startActivity(new Intent(this, SignUpActivity.class));
@@ -115,59 +120,31 @@ public class SignInActivity  extends BaseActivity implements View.OnClickListene
         mTietPass = (TextInputEditText) findViewById(R.id.tiet_sign_in_pass);
         mBtnSignIn = (Button) findViewById(R.id.btn_sign_in_sign_in);
         mBtnSignUp = (Button) findViewById(R.id.btn_sign_in_sign_up);
+        userStorage = new FileUserStorage();
     }
 
     private void grabDataAndSingIn(String mail, String pass) {
-        boolean isValidationSucceeded = true;
 
-        // validate email (empty or not)
-        if (mail.trim().length() == 0) {
-            isValidationSucceeded = false;
-            mTilEmail.setError(getString(R.string.msg_edt_error_empty_null));
-        }
-
-        // validate email length(  > 8)
-//        if (mail.length() < 8) {
-//            isValidationSucceeded = false;
-//            mTilEmail.setError(getString(R.string.msg_edt_error_pass_length));
-//        }
-
-        // validate email (contain @)
-//        if (!mail.contains("@")) {
-//            isValidationSucceeded = false;
-//            mTilEmail.setError(getString(R.string.msg_edt_error_valid_mail));
-//        }
-
-        // validate password (empty or not)
-        if (pass.trim().length() == 0) {
-            isValidationSucceeded = false;
-            mTilPass.setError(getString(R.string.msg_edt_error_pass_empty_null));
-        }
-
-        // validate password length(  > 3)
-//        if (pass.length() < 4) {
-//            isValidationSucceeded = false;
-//            mTilPass.setError(getString(R.string.msg_edt_error_pass_length));
-//        }
-
-        // if required fields are filled up then proceed with login
-        if (isValidationSucceeded) {
-
-            mTilEmail.setErrorEnabled(false);
-            mTilPass.setErrorEnabled(false);
-
-            Preference.getInstance(this).setUserMail(mail);
-            Preference.getInstance(this).setUserPass(pass);
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-
-        }
+        userStorage.checkAndGetUser(mail, pass, new UserStorage.UserFoundListener() {
+            @Override
+            public void onUserFound(User user) {
+                handelUserFound(user);
+            }
+        });
     }
 
-// ===========================================================
-// Inner and Anonymous Classes
-// ===========================================================
+    private void handelUserFound(User user) {
+        if (user == null) {
+            Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        PreferancesHelper preferancesHelper = PreferancesHelper.getInstance(this);
+        preferancesHelper.setLoggedIn(true);
+        preferancesHelper.setUserId(user.getId());
+
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
 }
+

@@ -8,8 +8,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.armen.contactlist.R;
+import com.example.armen.contactlist.pojo.User;
+import com.example.armen.contactlist.util.PreferancesHelper;
+import com.example.armen.contactlist.util.user.FileUserStorage;
+import com.example.armen.contactlist.util.user.UserStorage;
 
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener {
@@ -28,8 +33,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     private EditText mEtUserPassword;
     private TextInputLayout mTilUserEmail;
     private TextInputLayout mTilUserPassword;
-    private TextInputLayout mTilUserPasswordConfirm;
     private Button mBtnSignUp;
+    private UserStorage userStorage;
 
     // ===========================================================
     // Constructors
@@ -46,11 +51,9 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         findViews();
         init();
         setListeners();
-
     }
 
     @Override
@@ -61,7 +64,6 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     // ===========================================================
     // Click Listeners
     // ===========================================================
-
 
 
     private void setListeners() {
@@ -77,53 +79,70 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     // Methods
     // ===========================================================
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_sign_in_sign_in:
-                startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
-                finish();
-                break;
-            case R.id.btn_sign_in_sign_up:
-                registerUser();
-                break;
-        }
-    }
-
     private void findViews() {
         mTilUserEmail = (TextInputLayout) findViewById(R.id.til_sign_up_email);
         mTilUserPassword = (TextInputLayout) findViewById(R.id.til_sign_up_user_password);
         mTilUserPassword = (TextInputLayout) findViewById(R.id.til_sign_up_user_password_confirm);
-
-        mEtUserEmail = (EditText) findViewById(R.id.et_sign_in_email);
-        mEtUserPassword = (EditText) findViewById(R.id.et_sign_up_password);
-
+        mEtUserEmail = (EditText) findViewById(R.id.tiet_sign_in_email);
+        mEtUserPassword = (EditText) findViewById(R.id.tiet_sign_up_password);
         mBtnSignUp = (Button) findViewById(R.id.btn_sign_up_register);
     }
 
-    private void init(){
+    private void init() {
+        userStorage = new FileUserStorage();
     }
 
-    /**
-     * Validating form
-     */
-    private void registerUser() {
-
-        if (!checkEmail()) {
-            return;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_sign_up_register:
+                String mail = mEtUserEmail.getText().toString();
+                String pass = mEtUserPassword.getText().toString();
+                registerUser(mail, pass);
+                break;
         }
+    }
 
-        if (!checkPassword()) {
+    private void registerUser(String mail, String password) {
+
+        if(!checkAllFieldsValue()){
             return;
         }
 
         mTilUserEmail.setErrorEnabled(false);
         mTilUserPassword.setErrorEnabled(false);
 
+        String emailFromRegistration = mEtUserEmail.getText().toString();
+        String passwordRegistration = mEtUserPassword.getText().toString();
+        User user = new User(emailFromRegistration,passwordRegistration);
+        userStorage.registerUser(user, new UserStorage.UserFoundListener() {
+            @Override
+            public void onUserFound(User user) {
+                handelUserFound(user);
+            }
+        });
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 
-    private boolean checkEmail() {
+    private void handelUserFound(User user) {
+        if(user == null){
+            Toast.makeText(this, R.string.msg_wrong_data, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        PreferancesHelper preferancesHelper = PreferancesHelper.getInstance(this);
+        preferancesHelper.setLoggedIn(true);
+        preferancesHelper.setUserId(user.getId());
+
+        startActivity(new Intent(this, MainActivity.class));
+        finishAffinity();
+    }
+
+    private boolean checkAllFieldsValue() {
         String email = mEtUserEmail.getText().toString().trim();
         if (email.isEmpty() || !isValidEmail(email)) {
 
@@ -131,6 +150,11 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             mTilUserEmail.setError(getString(R.string.msg_email_error));
             mEtUserEmail.setError(getString(R.string.msg_required_error));
             requestFocus(mEtUserEmail);
+            return false;
+        }
+        if (mEtUserPassword.getText().toString().trim().isEmpty()) {
+            mTilUserPassword.setError(getString(R.string.msg_password_error));
+            requestFocus(mEtUserPassword);
             return false;
         }
         mTilUserEmail.setErrorEnabled(false);
@@ -142,17 +166,6 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-
-    private boolean checkPassword() {
-        if (mEtUserPassword.getText().toString().trim().isEmpty()) {
-
-            mTilUserPassword.setError(getString(R.string.msg_password_error));
-            requestFocus(mEtUserPassword);
-            return false;
-        }
-        mTilUserPassword.setErrorEnabled(false);
-        return true;
-    }
 
     private void requestFocus(View view) {
         if (view.requestFocus()) {

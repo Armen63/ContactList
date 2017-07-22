@@ -46,34 +46,17 @@ public class Preference {
         mEditor.putString(PREF_USER_MAIL, userMail);
         mEditor.apply();
     }
+    public void setUserPassword(String userPassword) {
+        mEditor.putString(PREF_USER_PASS, userPassword);
+        mEditor.apply();
+    }
 
     public String getUserMail() {
         return mSharedPreferences.getString(PREF_USER_MAIL, null);
     }
 
-    public void setUserPass(String userName) {
-        mEditor.putString(PREF_USER_PASS, userName);
-        mEditor.apply();
-    }
-
     public String getUserPass() {
         return mSharedPreferences.getString(PREF_USER_PASS, null);
     }
-
-    // ===========================================================
-    // Listeners
-    // ===========================================================
-
-    // ===========================================================
-    // Methods for/from SuperClass/Interfaces
-    // ===========================================================
-
-    // ===========================================================
-    // Methods
-    // ===========================================================
-
-    // ===========================================================
-    // Inner and Anonymous Classes
-    // ===========================================================
 
 }

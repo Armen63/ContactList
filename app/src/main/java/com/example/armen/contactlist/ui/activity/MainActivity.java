@@ -11,14 +11,14 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.armen.contactlist.R;
 import com.example.armen.contactlist.ui.fragment.ContactListFragment;
 import com.example.armen.contactlist.util.FragmentTransactionManager;
-import com.example.armen.contactlist.util.Preference;
-
+import com.example.armen.contactlist.util.PreferancesHelper;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener {
@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         setListeners();
         customizeActionBar();
         initDrawer();
+        Log.d("hayeer","sad");
         openScreen(
                 ContactListFragment.newInstance(),
                 R.id.nav_contact_list,
@@ -157,23 +158,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                 mustAddToBackStack
 
         );
-
+            Log.d(LOG_TAG,"after transaction" + fragment.getClass().getName());
     }
 
     private void logout() {
-
         new AlertDialog.Builder(MainActivity.this)
-                .setTitle("logout")
-                .setMessage("A y sure?")
-                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.title)
+                .setMessage(R.string.appbar_scrolling_view_behavior)
+                .setPositiveButton(R.string.text_contact_list, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Preference.getInstance(MainActivity.this).setUserPass(null);
-                        Preference.getInstance(MainActivity.this).setUserPass(null);
+                        PreferancesHelper.getInstance(MainActivity.this).resetAll();
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
                         finish();
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.text_btn_auth_sign, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (dialog != null) {
                             dialog.dismiss();
@@ -182,6 +181,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                 })
                 .show();
     }
+
     // ===========================================================
     // Inner and Anonymous Classes
     // ===========================================================

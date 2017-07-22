@@ -27,7 +27,6 @@ public class StorageHelper {
 
     public static Object deserialize(String fileName) {
         Object obj = null;
-
         try {
             FileInputStream fileIn = App.getInstance().openFileInput(fileName);
             ObjectInputStream in = new ObjectInputStream(fileIn);
