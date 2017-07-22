@@ -163,16 +163,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     private void logout() {
         new AlertDialog.Builder(MainActivity.this)
-                .setTitle(R.string.title)
-                .setMessage(R.string.appbar_scrolling_view_behavior)
-                .setPositiveButton(R.string.text_contact_list, new DialogInterface.OnClickListener() {
+                .setTitle(R.string.text_logout)
+                .setMessage(R.string.msg_logout)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         PreferancesHelper.getInstance(MainActivity.this).resetAll();
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
                         finish();
                     }
                 })
-                .setNegativeButton(R.string.text_btn_auth_sign, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (dialog != null) {
                             dialog.dismiss();

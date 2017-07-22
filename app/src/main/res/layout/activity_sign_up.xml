@@ -19,7 +19,7 @@
         android:layout_marginBottom="45dp"
         android:layout_marginTop="30dp"
         android:gravity="center_horizontal"
-        android:text="@string/registration_prompt"
+        android:text="@string/registration_caption"
         android:textSize="20sp" />
 
 
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:hint="@string/email"
+            android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:maxLength="20"
             android:maxLines="1"
@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:hint="@string/confirm_password"
+            android:hint="@string/hint_confirm_password"
             android:inputType="textPassword"
             android:maxLength="20"
             android:maxLines="1"
@@ -83,5 +83,5 @@
         android:id="@+id/btn_sign_up_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/register" />
+        android:text="@string/btn_register" />
 </LinearLayout>
