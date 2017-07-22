@@ -1,6 +1,7 @@
 package com.example.armen.contactlist.pojo;
 
 
+import com.example.armen.contactlist.util.Constant;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class ContactResponse {
     // Fields
     // ===========================================================
 
-    @SerializedName("contacts")
+    @SerializedName(Constant.POJO.CONTACTS)
     private ArrayList<Contact> contacts;
 
     // ===========================================================

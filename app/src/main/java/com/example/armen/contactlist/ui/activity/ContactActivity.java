@@ -136,8 +136,6 @@ public class ContactActivity extends BaseActivity {
                     Constant.API.CONTACT_ITEM + contactId + Constant.API.CONTACT_ITEM_POSTFIX,
                     HttpRequestManager.RequestType.CONTACT_ITEM
             );
-
-        } else {
         }
     }
 

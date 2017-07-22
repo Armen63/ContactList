@@ -3,6 +3,7 @@ package com.example.armen.contactlist.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.armen.contactlist.util.Constant;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -20,25 +21,25 @@ public class Contact implements Parcelable {
     // Fields
     // ===========================================================
 
-    @SerializedName("contact_id")
+    @SerializedName(Constant.POJO.CONTACT_ID)
     private long id;
 
-    @SerializedName("first_name")
+    @SerializedName(Constant.POJO.FIRST_NAME)
     private String fName;
 
-    @SerializedName("last_name")
+    @SerializedName(Constant.POJO.LAST_NAME)
     private String lName;
 
-    @SerializedName("email")
+    @SerializedName(Constant.POJO.EMAIL)
     private String email;
 
-    @SerializedName("phone")
+    @SerializedName(Constant.POJO.PHONE)
     private String phone;
 
-    @SerializedName("image")
+    @SerializedName(Constant.POJO.IMAGE)
     private String image;
 
-    @SerializedName("note")
+    @SerializedName(Constant.POJO.NOTE)
     private String notes;
 
     // ===========================================================

@@ -96,14 +96,12 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_sign_up_register:
-                String mail = mEtUserEmail.getText().toString();
-                String pass = mEtUserPassword.getText().toString();
-                registerUser(mail, pass);
+                registerUser();
                 break;
         }
     }
 
-    private void registerUser(String mail, String password) {
+    private void registerUser() {
 
         if(!checkAllFieldsValue()){
             return;

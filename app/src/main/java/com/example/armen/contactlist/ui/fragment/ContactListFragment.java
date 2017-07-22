@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.armen.contactlist.R;
 import com.example.armen.contactlist.io.bus.BusProvider;
@@ -37,7 +38,6 @@ public class ContactListFragment extends BaseFragment implements View.OnClickLis
     // ===========================================================
     // Fields
     // ===========================================================
-
     private Bundle mArgumentData;
     private RecyclerView mRv;
     private ContactAdapter mRecyclerViewAdapter;
@@ -170,6 +170,7 @@ public class ContactListFragment extends BaseFragment implements View.OnClickLis
                     HttpRequestManager.RequestType.CONTACT_LIST
             );
         } else {
+            Toast.makeText(getContext(),"internet chka", Toast.LENGTH_SHORT).show();
         }
     }
 

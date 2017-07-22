@@ -24,6 +24,18 @@ public class Constant {
         public static final String EXTRA_CONTACT_ID = "EXTRA_CONTACT_ID";
     }
 
+    public class POJO {
+        public static final String CONTACTS = "contacts";
+
+        public static final String CONTACT_ID = "contact_id";
+        public static final String FIRST_NAME = "first_name";
+        public static final String LAST_NAME = "last_name";
+        public static final String PHONE = "phone";
+        public static final String EMAIL = "email";
+        public static final String NOTE = "note";
+        public static final String IMAGE = "image";
+    }
+
     public class Preferances {
         public static final String PREFERENCES_NAME = "PREFERENCES_NAME";
         public static final String USER_ID = "USER_ID";
