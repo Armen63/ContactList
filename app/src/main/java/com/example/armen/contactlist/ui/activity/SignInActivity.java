@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.example.armen.contactlist.R;
 import com.example.armen.contactlist.io.bus.BusProvider;
 import com.example.armen.contactlist.pojo.User;
-import com.example.armen.contactlist.util.PreferancesHelper;
+import com.example.armen.contactlist.util.helper.PreferancesHelper;
 import com.example.armen.contactlist.util.user.FileUserStorage;
 import com.example.armen.contactlist.util.user.UserStorage;
 

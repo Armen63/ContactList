@@ -1,6 +1,8 @@
-package com.example.armen.contactlist.util;
+package com.example.armen.contactlist.util.helper;
 
 import android.content.Context;
+
+import com.example.armen.contactlist.util.App;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

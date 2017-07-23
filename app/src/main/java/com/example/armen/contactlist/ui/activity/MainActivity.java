@@ -18,7 +18,7 @@ import android.view.View;
 import com.example.armen.contactlist.R;
 import com.example.armen.contactlist.ui.fragment.ContactListFragment;
 import com.example.armen.contactlist.util.FragmentTransactionManager;
-import com.example.armen.contactlist.util.PreferancesHelper;
+import com.example.armen.contactlist.util.helper.PreferancesHelper;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener {
@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         setListeners();
         customizeActionBar();
         initDrawer();
-        Log.d("hayeer","sad");
         openScreen(
                 ContactListFragment.newInstance(),
                 R.id.nav_contact_list,
